@@ -1,0 +1,122 @@
+cmake_minimum_required(VERSION 3.16)
+project(GigaLearnRLBot)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Find required packages
+find_package(PkgConfig REQUIRED)
+
+# Include directories
+include_directories(${CMAKE_SOURCE_DIR}/GigaLearnCPP/src/public)
+include_directories(${CMAKE_SOURCE_DIR}/GigaLearnCPP/src/private)
+include_directories(${CMAKE_SOURCE_DIR}/GigaLearnCPP/RLGymCPP/src/RLGymCPP)
+include_directories(${CMAKE_SOURCE_DIR}/GigaLearnCPP/RocketSim/src)
+include_directories(${CMAKE_SOURCE_DIR}/RLBotCPP/inc)
+
+# RLBotCPP library
+add_library(RLBotCPP STATIC
+    ${CMAKE_SOURCE_DIR}/RLBotCPP/src/bot.cc
+    ${CMAKE_SOURCE_DIR}/RLBotCPP/src/botmanager.cc
+    ${CMAKE_SOURCE_DIR}/RLBotCPP/src/botprocess.cc
+    ${CMAKE_SOURCE_DIR}/RLBotCPP/src/color.cc
+    ${CMAKE_SOURCE_DIR}/RLBotCPP/src/interface.cc
+    ${CMAKE_SOURCE_DIR}/RLBotCPP/src/matchsettings.cc
+    ${CMAKE_SOURCE_DIR}/RLBotCPP/src/namedrenderer.cc
+    ${CMAKE_SOURCE_DIR}/RLBotCPP/src/platform_windows.cc
+    ${CMAKE_SOURCE_DIR}/RLBotCPP/src/renderer.cc
+    ${CMAKE_SOURCE_DIR}/RLBotCPP/src/scopedrenderer.cc
+    ${CMAKE_SOURCE_DIR}/RLBotCPP/src/server.cc
+    ${CMAKE_SOURCE_DIR}/RLBotCPP/src/statesetting.cc
+)
+
+# GigaLearnCPP library
+add_library(GigaLearnCPP STATIC
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/src/public/Learner.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/src/public/Model.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/src/public/Optimizer.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/src/public/ReplayBuffer.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/src/public/Environment.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/src/public/GameState.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/src/public/Player.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/src/public/Ball.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/src/public/Arena.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/src/public/Reward.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/src/public/TerminalCondition.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/src/public/ObsBuilder.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/src/public/ActionParser.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/src/public/StateSetter.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/src/private/PPO.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/src/private/Network.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/src/private/Tensor.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/src/private/EnvironmentImpl.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/src/private/GameStateImpl.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/src/private/PlayerImpl.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/src/private/BallImpl.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/src/private/ArenaImpl.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/src/private/RewardImpl.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/src/private/TerminalConditionImpl.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/src/private/ObsBuilderImpl.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/src/private/ActionParserImpl.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/src/private/StateSetterImpl.cpp
+)
+
+# RLGymCPP library
+add_library(RLGymCPP STATIC
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/RLGymCPP/src/RLGymCPP/CommonValues.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/RLGymCPP/src/RLGymCPP/Math.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/RLGymCPP/src/RLGymCPP/Rewards/CommonRewards.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/RLGymCPP/src/RLGymCPP/Rewards/ZeroSumReward.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/RLGymCPP/src/RLGymCPP/TerminalConditions/NoTouchCondition.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/RLGymCPP/src/RLGymCPP/TerminalConditions/GoalScoreCondition.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/RLGymCPP/src/RLGymCPP/OBSBuilders/DefaultObs.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/RLGymCPP/src/RLGymCPP/OBSBuilders/AdvancedObs.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/RLGymCPP/src/RLGymCPP/StateSetters/KickoffState.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/RLGymCPP/src/RLGymCPP/StateSetters/RandomState.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/RLGymCPP/src/RLGymCPP/StateSetters/CombinedState.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/RLGymCPP/src/RLGymCPP/ActionParsers/DefaultAction.cpp
+)
+
+# RocketSim library
+add_library(RocketSim STATIC
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/RocketSim/src/Arena.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/RocketSim/src/Ball.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/RocketSim/src/Car.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/RocketSim/src/GameState.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/RocketSim/src/MutatorConfig.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/RocketSim/src/Pad.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/RocketSim/src/Player.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/RocketSim/src/RocketSim.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/RocketSim/src/Team.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/RocketSim/src/Utils.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/RocketSim/libsrc/RocketSim.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/RocketSim/libsrc/Arena.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/RocketSim/libsrc/Ball.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/RocketSim/libsrc/Car.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/RocketSim/libsrc/GameState.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/RocketSim/libsrc/MutatorConfig.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/RocketSim/libsrc/Pad.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/RocketSim/libsrc/Player.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/RocketSim/libsrc/Team.cpp
+    ${CMAKE_SOURCE_DIR}/GigaLearnCPP/RocketSim/libsrc/Utils.cpp
+)
+
+# Main executable
+add_executable(rlbot
+    rlbotmain.cpp
+    RLBotClient.cpp
+    RLBotClient.h
+)
+
+# Link libraries
+target_link_libraries(rlbot
+    RLBotCPP
+    GigaLearnCPP
+    RLGymCPP
+    RocketSim
+    ws2_32
+    wsock32
+)
+
+# Copy config file
+configure_file(${CMAKE_SOURCE_DIR}/CppPythonAgent.cfg ${CMAKE_BINARY_DIR}/CppPythonAgent.cfg COPYONLY)
